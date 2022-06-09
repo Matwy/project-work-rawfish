@@ -1,0 +1,26 @@
+{
+  "name": "projectwork",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start-dev": "nodemon index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
+    "populate": "npx sequelize-cli db:seed:all",
+    "populate:reset": "npx sequelize-cli db:seed:undo:all && npm run populate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "pg": "^8.7.3",
+    "sequelize": "^6.20.1"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  }
+}
