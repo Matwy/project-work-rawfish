@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.addConstraint('pings', {
+        await queryInterface.addConstraint('fightpoints', {
             fields: ['user_uuid'],
             type: 'foreign key',
             name: 'associazione ping-user',
@@ -13,6 +13,6 @@ module.exports = {
         })
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.removeConstraint('pings', 'associazione ping-user')
+        await queryInterface.removeConstraint('fightpoints', 'associazione ping-user')
     }
 };

@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    await queryInterface.bulkInsert('pings', [{
+    await queryInterface.bulkInsert('fightpoints', [{
       user_uuid: null,
       posizione: '41.89468900202044, 12.492545318247195',
       createdAt: new Date(),

@@ -1,9 +1,9 @@
 const { Router } = require("express");
-const { getAllUsers, getUsersFightPoints } = require('../controller/users_controller')
+const { getAllUsers, getUserByUuid } = require('../controller/users_controller')
 
 const router = Router()
 
+router.get('/:uuid', getUserByUuid)
 router.get('/', getAllUsers)
-router.get('/:user_uuid', getUsersFightPoints)
 
 module.exports = router

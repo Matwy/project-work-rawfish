@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('pings', {
+        await queryInterface.createTable('fightpoints', {
             uuid: {
                 allowNull: false,
                 primaryKey: true,
