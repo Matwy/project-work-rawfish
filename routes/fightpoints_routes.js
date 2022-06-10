@@ -1,10 +1,11 @@
-const { Router } = require("express");
-const { getAllFightpoints, getFightpointsByUuid } = require('../controller/fightpoints_controller')
+const { Router } = require('express');
+const { getAllFightpoints, getFightpointsByUuid, createFightpoints } = require('../controller/fightpoints_controller')
 
 const router = Router()
 
-//  GET /Fightpoints
-router.get("/:uuid", getFightpointsByUuid)
-router.get("/", getAllFightpoints)
+router.get('/:uuid', getFightpointsByUuid)
+router.get('/', getAllFightpoints)
+
+router.post('/create', createFightpoints)
 
 module.exports = router

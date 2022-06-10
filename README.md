@@ -1,7 +1,19 @@
 192.168.1.104:3000
 
-/fight-points	       getAllFightpoints
-/fight-points/:uuid    getFightpointsByUuid
+GET /fight-points	       getAllFightpoints
 
-/users/:uuid           getUserByUuid
-/users                 getAllUsers
+GET /fight-points/:uuid    getFightpointsByUuid
+
+POST /create               createFightP
+
+
+
+GET /users/:uuid           getUserByUuid
+
+GET /users                 getAllUsers
+
+POST /create                createUser
+body
+{
+    username: ""
+}

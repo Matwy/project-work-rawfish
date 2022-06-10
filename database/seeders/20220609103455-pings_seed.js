@@ -5,11 +5,12 @@ module.exports = {
 
     await queryInterface.bulkInsert('fightpoints', [{
       user_uuid: null,
+      state: 'Italy',
+      city: 'Roma',
       posizione: '41.89468900202044, 12.492545318247195',
       createdAt: new Date(),
       updatedAt: new Date()
     }], {});
-
   },
 
   async down(queryInterface, Sequelize) {

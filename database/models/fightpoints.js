@@ -7,21 +7,26 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
-            // define association here
-        }
+
     }
     fightpoints.init({
         uuid: {
             type: DataTypes.UUID,
             primaryKey: true,
+            allowNull: false,
+            defaultValue: sequelize.literal('uuid_generate_v4()')
+        },
+        state: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        city: {
+            type: DataTypes.STRING,
             allowNull: false
         },
         user_uuid: {
             type: DataTypes.UUID,
             allowNull: true,
-            refences: 'users',
-            referencesKey: 'uuid'
         },
         posizione: {
             type: DataTypes.STRING,
@@ -31,5 +36,12 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'fightpoints',
     });
+    fightpoints.associate = function (models) {
+        // associations can be defined here
+        fightpoints.belongsTo(models.users, {
+            foreignKey: 'user_uuid',
+            as: 'user',
+        })
+    }
     return fightpoints;
 };
