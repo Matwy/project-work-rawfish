@@ -15,7 +15,6 @@ exports.isAUser = async (str) => {
     if (user == null) return false
 
     //user exist
-    console.log(user)
     return true
 }
 exports.isAFightpoints = async (str) => {
@@ -26,7 +25,6 @@ exports.isAFightpoints = async (str) => {
     if (fightpoint == null) return false
 
     //fightpoints exist
-    console.log(fightpoint)
     return true
 }
 exports.isAFightpointsCopy = async (str) => {

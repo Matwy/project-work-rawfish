@@ -2,7 +2,8 @@ const models = require('../database/models')
 const tools = require('./tools')
 
 module.exports.getAllFightpoints = async (req, res, next) => {
-    /*restituisco tutti i fightspoint*/
+    /*  restituisco tutti i fightpoints */
+    //  con gli user associati
     allMonuments = await models.fightpoints.findAll({
         attributes: ['state', 'city', 'posizione'],
         include: [{ model: models.users, as: 'user', attributes: ['uuid', 'username'] }]
@@ -29,7 +30,7 @@ module.exports.createFightpoints = async (req, res, next) => {
     /*creo un fightpoint data la posizione e l'utente che lo possiede*/
     const fightpointObj = req.body
     //  bad Requests
-    if (!('user_uuid' in fightpointObj && 'posizione' in fightpointObj)) {
+    if (!('user_uuid' in fightpointObj && 'posizione' in fightpointObj && 'city' in fightpointObj && 'state' in fightpointObj)) {
         res.status(400).json({ status: 400, message: fightpointObj + " doesn't have needed property" })
         return
     }
@@ -59,11 +60,21 @@ module.exports.createFightpoints = async (req, res, next) => {
         },
     })
 }
-exports.setFightpointOwner = (req, res, next) => {
+exports.setFightpointOwner = async (req, res, next) => {
     const reqObj = req.body
-    models.fightpoints.update({
-        user_uuid: reqObj.user_uuid,
-        where: { uuid: reqObj.fightpoints_uuid }
-    })
+    //bad requests
+    //check user uuid
+    if (!await tools.isAUser(reqObj.user_uuid)) {
+        res.status(400).json({ status: 400, message: reqObj.user_uuid + " the user don't exist" })
+        return
+    }
+    if (!await tools.isAFightpoints(reqObj.fightpoint_uuid)) {
+        res.status(400).json({ status: 400, message: reqObj.fightpoint_uuid + " the fightpoint don't exist" })
+        return
+    }
+    await models.fightpoints.update(
+        { user_uuid: reqObj.user_uuid },
+        { where: { uuid: reqObj.fightpoint_uuid } }
+    )
     res.status(200).json({ message: 'fightpoint owner updated' })
 }
