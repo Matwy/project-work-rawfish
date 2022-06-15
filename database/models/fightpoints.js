@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'user_uuid',
             as: 'user',
         })
+        fightpoints.hasMany(models.questions, {
+            foreignKey: 'fightpoint_uuid',
+            as: 'questions'
+        })
     }
     return fightpoints;
 };

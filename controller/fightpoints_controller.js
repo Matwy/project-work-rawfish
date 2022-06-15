@@ -1,12 +1,14 @@
 const models = require('../database/models')
 const tools = require('./tools')
-
+// 
+// GET
+// 
 module.exports.getAllFightpoints = async (req, res, next) => {
     /*  restituisco tutti i fightpoints */
     //  con gli user associati
     allMonuments = await models.fightpoints.findAll({
-        attributes: ['state', 'city', 'posizione'],
-        include: [{ model: models.users, as: 'user', attributes: ['uuid', 'username'] }]
+        attributes: ['uuid', 'state', 'city', 'posizione'],
+        include: [{ model: models.users, as: 'user', attributes: ['username'] }]
     })
     res.status(200).json(allMonuments)
 }
@@ -26,6 +28,10 @@ module.exports.getFightpointsByUuid = async (req, res, next) => {
 
     res.status(200).json(fightpointsById)
 }
+
+// 
+// POST
+// 
 module.exports.createFightpoints = async (req, res, next) => {
     /*creo un fightpoint data la posizione e l'utente che lo possiede*/
     const fightpointObj = req.body

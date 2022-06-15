@@ -1,21 +1,19 @@
 'use strict';
-
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('users', {
+        await queryInterface.createTable('wrong_answers', {
             uuid: {
                 type: Sequelize.UUID,
                 allowNull: false,
                 primaryKey: true,
                 defaultValue: Sequelize.literal('uuid_generate_v4()')
             },
-            firebase_id: {
+            question_uuid: {
+                type: Sequelize.UUID,
                 allowNull: false,
-                type: Sequelize.STRING
             },
-            username: {
+            wrong_answer: {
                 type: Sequelize.STRING,
-                allowNull: false
             },
             createdAt: {
                 allowNull: false,
@@ -25,9 +23,9 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE
             }
-        })
+        });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('users');
+        await queryInterface.dropTable('wrong_answers');
     }
 };
