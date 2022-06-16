@@ -1,3 +1,5 @@
+const { raw } = require('express')
+const { sequelize } = require('../database/models')
 const models = require('../database/models')
 const tools = require('./tools')
 // 
@@ -6,10 +8,25 @@ const tools = require('./tools')
 module.exports.getAllFightpoints = async (req, res, next) => {
     /*  restituisco tutti i fightpoints */
     //  con gli user associati
-    allMonuments = await models.fightpoints.findAll({
+    //  e con il numero di domande per fightpoint
+    const allMonuments = await models.fightpoints.findAll({
         attributes: ['uuid', 'state', 'city', 'posizione'],
-        include: [{ model: models.users, as: 'user', attributes: ['username'] }]
+        include: [
+            { model: models.users, as: 'user', attributes: ['username'] },
+            {
+                model: models.questions,
+                as: 'questions',
+                attributes: [[sequelize.fn('count', sequelize.col('question')), 'n_questions']],
+            }
+        ],
+        group: ['fightpoints.uuid', 'state', 'city', 'posizione', 'user.username'],
+        raw: true
     })
+    // shape from 'questions.n_questions': 2 to n_questions : 2
+    for (let i = 0; i < allMonuments.length; i++) {
+        allMonuments[i].n_questions = allMonuments[i]['questions.n_questions']
+        allMonuments[i]['questions.n_questions'] = undefined
+    }
     res.status(200).json(allMonuments)
 }
 module.exports.getFightpointsByUuid = async (req, res, next) => {

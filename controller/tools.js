@@ -36,3 +36,8 @@ exports.isAFightpointsCopy = async (str) => {
     console.log(fightpoint)
     return true
 }
+
+exports.badRequest = async (res, error) => {
+    res.status(400).json({ status: 400, message: error })
+    return
+}
