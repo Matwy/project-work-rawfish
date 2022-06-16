@@ -44,6 +44,7 @@ module.exports.getUserFightpoints = async (req, res, next) => {
     })
     res.status(200).json(fightpoints)
 }
+
 //
 //  POST    
 //

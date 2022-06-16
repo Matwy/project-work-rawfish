@@ -3,8 +3,10 @@ const tools = require('./tools')
 exports.getQAByFightpoints = async (req, res, next) => {
     const fightpoint_uuid = req.query.fightpoint_uuid
     let n_question = req.query.n_question
+    console.log('q/a request ', fightpoint_uuid, n_question);
     /*BAD REQUESTS*/
     //  n_question validation
+    console.log(req.query);
     if (isNaN(n_question) || n_question.length < 0)
         return tools.badRequest(res, 'n_question ' + n_question + ' must be a number')
 

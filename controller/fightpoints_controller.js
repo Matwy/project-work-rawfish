@@ -12,22 +12,16 @@ module.exports.getAllFightpoints = async (req, res, next) => {
     const allMonuments = await models.fightpoints.findAll({
         attributes: ['uuid', 'state', 'city', 'posizione'],
         include: [
-            { model: models.users, as: 'user', attributes: ['username'] },
-            {
-                model: models.questions,
-                as: 'questions',
-                attributes: [[sequelize.fn('count', sequelize.col('question')), 'n_questions']],
-            }
-        ],
-        group: ['fightpoints.uuid', 'state', 'city', 'posizione', 'user.username'],
-        raw: true
+            { model: models.users, as: 'user', attributes: ['username', 'firebase_id'] },
+            { model: models.questions, as: 'questions' }
+        ]
     })
-    // shape from 'questions.n_questions': 2 to n_questions : 2
-    for (let i = 0; i < allMonuments.length; i++) {
-        allMonuments[i].n_questions = allMonuments[i]['questions.n_questions']
-        allMonuments[i]['questions.n_questions'] = undefined
+    const fightpoints = JSON.parse(JSON.stringify(allMonuments))
+    for (let i = 0; i < fightpoints.length; i++) {
+        fightpoints[i].n_questions = fightpoints[i].questions.length
+        fightpoints[i].questions = undefined
     }
-    res.status(200).json(allMonuments)
+    res.status(200).json(fightpoints)
 }
 module.exports.getFightpointsByUuid = async (req, res, next) => {
     /*  restituisco i fight point di un utente specifico */

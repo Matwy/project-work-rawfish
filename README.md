@@ -2,12 +2,12 @@
 
 GET /fight-points	       getAllFightpoints
 {
-    "uuid": "f161ebc2-0b15-4a90-9205-462f930f8c52",
-    "state": "Iraq",
-    "city": "Baghdad",
-    "posizione": "33.333333333333336, 44.400000",
-    "user.username": null,
-    "n_questions": "0"
+    "uuid": "39f21dfc-2b7c-4447-8976-7cf72edab27e",
+    "state": "Portogallo",
+    "city": "Lisbona",
+    "posizione": "38.4300, -9.0759",
+    "user": null,
+    "n_questions": 2
 }
 
 GET /fight-points/:uuid    getFightpointsByUuid
