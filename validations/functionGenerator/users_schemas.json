@@ -1,0 +1,13 @@
+{
+    "$id": "user/create",
+    "type": "object",
+    "properties": {
+        "firebase_id": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        }
+    },
+    "required": ["username"]
+}

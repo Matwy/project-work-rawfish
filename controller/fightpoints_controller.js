@@ -1,7 +1,7 @@
-const { raw } = require('express')
 const { sequelize } = require('../database/models')
 const models = require('../database/models')
 const tools = require('./tools')
+const validations = require('../validations/validate-cjs')
 // 
 // GET
 // 
@@ -47,8 +47,9 @@ module.exports.createFightpoints = async (req, res, next) => {
     /*creo un fightpoint data la posizione e l'utente che lo possiede*/
     const fightpointObj = req.body
     //  bad Requests
-    if (!('user_uuid' in fightpointObj && 'posizione' in fightpointObj && 'city' in fightpointObj && 'state' in fightpointObj)) {
-        res.status(400).json({ status: 400, message: fightpointObj + " doesn't have needed property" })
+    const validateFightpoint = validations["fightpoints/create"]
+    if (!validateFightpoint(fightpointObj)) {
+        res.status(400).json({ status: 400, error: validateFightpoint.errors })
         return
     }
     if (!await tools.isAUser(fightpointObj.user_uuid) && fightpointObj.user_uuid != null) {

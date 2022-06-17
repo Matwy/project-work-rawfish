@@ -1,0 +1,19 @@
+{
+    "$id": "fightpoints/create",
+    "type": "object",
+    "properties": {
+        "state": {
+            "type": "string"
+        },
+        "city": {
+            "type": "string"
+        },
+        "posizione": {
+            "type": "string"
+        },
+        "user_uuid": {
+            "type": "string"
+        }
+    },
+    "required": ["state", "city", "posizione", "user_uuid"]
+}

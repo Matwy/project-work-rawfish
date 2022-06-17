@@ -46,25 +46,5 @@ module.exports.getUserFightpoints = async (req, res, next) => {
 }
 
 //
-//  POST    
+//  POST
 //
-module.exports.createUser = async (req, res, next) => {
-    /*creo uno user data la posizione e l'utente che lo possiede*/
-    const userObj = req.body
-    //  bad Requests
-
-    if (userObj == null || !('username' in userObj) || !('firebase_id' in userObj)) {
-        res.status(400).json({ status: 400, message: userObj + " doesn't have needed property" })
-        return
-    }
-    await models.users.create({
-        username: userObj.username,
-        firebase_id: userObj.firebase_id,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    })
-    res.status(201).json({
-        message: 'users created',
-        user: { username: userObj.username },
-    })
-}
