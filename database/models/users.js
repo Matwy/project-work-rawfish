@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'user_uuid',
             as: 'fightpoint',
         })
+        users.hasMany(models.notifications, {
+            foreignKey: 'user_uuid',
+            as: 'notification',
+        })
     }
     return users;
 };

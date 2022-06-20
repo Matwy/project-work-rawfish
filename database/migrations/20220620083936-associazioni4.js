@@ -29,6 +29,24 @@ module.exports = {
                 field: 'uuid'
             }
         })
+        await queryInterface.addConstraint('notifications', {
+            fields: ['user_uuid'],
+            type: 'foreign key',
+            name: 'associazione notifications-user',
+            references: {
+                table: 'users',
+                field: 'uuid'
+            }
+        })
+        await queryInterface.addConstraint('notifications', {
+            fields: ['fightpoint_uuid'],
+            type: 'foreign key',
+            name: 'associazione notifications-fightpoint',
+            references: {
+                table: 'fightpoints',
+                field: 'uuid'
+            }
+        })
     },
     async down(queryInterface, Sequelize) {
         await queryInterface.removeConstraint('fightpoints', 'associazione fightpoint-user')

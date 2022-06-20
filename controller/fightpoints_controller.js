@@ -1,4 +1,3 @@
-const { sequelize } = require('../database/models')
 const models = require('../database/models')
 const tools = require('./tools')
 const validations = require('../validations/validate-cjs')
@@ -79,20 +78,37 @@ module.exports.createFightpoints = async (req, res, next) => {
     })
 }
 exports.setFightpointOwner = async (req, res, next) => {
-    const reqObj = req.body
+    const user_uuid = req.body.user_uuid
+    const fightpoint_uuid = req.body.fightpoint_uuid
+
     //bad requests
     //check user uuid
-    if (!await tools.isAUser(reqObj.user_uuid)) {
-        res.status(400).json({ status: 400, message: reqObj.user_uuid + " the user don't exist" })
+    if (!await tools.isAUser(user_uuid)) {
+        res.status(400).json({ status: 400, message: user_uuid + " the user don't exist" })
         return
     }
-    if (!await tools.isAFightpoints(reqObj.fightpoint_uuid)) {
-        res.status(400).json({ status: 400, message: reqObj.fightpoint_uuid + " the fightpoint don't exist" })
+    //check fightpoint uuid
+    if (!await tools.isAFightpoints(fightpoint_uuid)) {
+        res.status(400).json({ status: 400, message: fightpoint_uuid + " the fightpoint don't exist" })
         return
     }
+    // save last fightpoint owner for notification
+    const fightpoint = await models.fightpoints.findOne({
+        where: { uuid: fightpoint_uuid }
+    })
+    lastOwner = fightpoint.user_uuid
+    //updateOwner
     await models.fightpoints.update(
-        { user_uuid: reqObj.user_uuid },
-        { where: { uuid: reqObj.fightpoint_uuid } }
+        { user_uuid: user_uuid },
+        { where: { uuid: fightpoint_uuid } }
     )
+    /* TODO: controlla se funziona */
+    // save notification for the last Owner
+    if (lastOwner) {
+        await models.notifications.create({
+            user_uuid: lastOwner,
+            fightpoint_uuid: fightpoint_uuid
+        })
+    }
     res.status(200).json({ message: 'fightpoint owner updated' })
 }

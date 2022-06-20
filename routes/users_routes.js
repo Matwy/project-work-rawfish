@@ -4,8 +4,6 @@ const { getAllUsers, getUserByUuid, getUserFightpoints } = require('../controlle
 
 const router = Router()
 
-router.get('/fight-points', getUserFightpoints)
-router.get('/:uuid', getUserByUuid)
 router.get('/', getAllUsers)
 
 
