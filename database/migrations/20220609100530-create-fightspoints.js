@@ -21,6 +21,10 @@ module.exports = {
                 type: Sequelize.UUID,
                 allowNull: true,
             },
+            score: {
+                type: Sequelize.INTEGER,
+                allowNull: true,
+            },
             posizione: {
                 type: Sequelize.STRING,
                 allowNull: false

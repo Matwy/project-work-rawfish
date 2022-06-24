@@ -17,6 +17,14 @@ exports.isAUser = async (str) => {
     //user exist
     return true
 }
+exports.isAUserFromFbid = async (str) => {
+    //  user don't exist
+    const user = await models.users.findOne({ where: { firebase_id: str } })
+    if (!user) return false
+
+    //user exist
+    return true
+}
 exports.isAFightpoints = async (str) => {
     //  uuid Not valid
     if (!this.isUuid(str)) return false

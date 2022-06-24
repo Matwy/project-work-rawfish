@@ -25,6 +25,10 @@ module.exports.getUserInfo = async (firebaseIdObj) => {
     userInfo.uuid = undefined
     return userInfo
 }
+module.exports.UserInfoFromFbid = async (req, res, next) => {
+    const userInfo = await this.getUserInfo(res.locals.firebase_uid)
+    return res.status(200).json(userInfo)
+}
 // 
 // GET
 // 
@@ -33,8 +37,6 @@ module.exports.getAllUsers = async (req, res, next) => {
     const allUsers = await models.users.findAll()
     res.status(200).json(allUsers)
 }
-
-
 //
 //  POST
 //

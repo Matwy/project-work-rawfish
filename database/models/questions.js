@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
         modelName: 'questions',
     });
     Questions.associate = function (models) {
+        Questions.belongsTo(models.fightpoints, {
+            foreignKey: 'fightpoint_uuid',
+            as: 'fightpoint'
+        })
         Questions.hasMany(models.wrong_answers, {
             foreignKey: 'question_uuid',
             as: 'wrong_answers',

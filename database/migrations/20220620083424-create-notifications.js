@@ -12,6 +12,10 @@ module.exports = {
                 type: Sequelize.UUID,
                 allowNull: false
             },
+            score: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            },
             fightpoint_uuid: {
                 type: Sequelize.UUID,
                 allowNull: false

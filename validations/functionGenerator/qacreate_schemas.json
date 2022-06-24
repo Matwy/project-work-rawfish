@@ -1,0 +1,20 @@
+{
+    "$id":"qa/create",
+    "type":"object",
+    "properties":{
+        "question":{
+            "type":"string"
+        },
+        "correct_answer":{
+            "type":"string"
+        },
+        "fightpoint_uuid":{
+            "type":"string"
+        },
+        "wrong_answers":{
+          "type":"array",
+          "minItems":3 
+        }
+    },
+    "required": ["question", "correct_answer", "fightpoint_uuid", "wrong_answers"]
+}

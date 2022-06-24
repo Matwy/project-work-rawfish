@@ -1,5 +1,7 @@
 const models = require('../database/models')
 const tools = require('./tools')
+const validations = require('../validations/validate-cjs')
+
 exports.getQAByFightpoints = async (req, res, next) => {
     const fightpoint_uuid = req.query.fightpoint_uuid
     let n_question = req.query.n_question
@@ -25,7 +27,7 @@ exports.getQAByFightpoints = async (req, res, next) => {
         }]
     })
     // fightpoint don't exist or don't have questions
-    if (QA == null)
+    if (!QA || QA.length < 1)
         return res.status(400).json({ status: 400, message: fightpoint_uuid + ' is not a fightpoint or dont have any question' })
 
     // if QA[n_question] out of bounds then take the last question 
@@ -45,7 +47,14 @@ exports.getQAByFightpoints = async (req, res, next) => {
 // 
 exports.createQuestion = async (req, res, next) => {
     const questionObj = req.body
+    const validate = validations['qa/create']
 
+    if (!validate(questionObj)) {
+        return res.status(400).json({ status: 400, error: validate.errors })
+    }
+    if (!await tools.isAFightpoints(questionObj.fightpoint_uuid)) {
+        return res.status(400).json({ status: 400, error: questionObj.fightpoint_uuid + " is not a fightpoint" })
+    }
     const question = await models.questions.create({
         question: questionObj.question,
         correct_answer: questionObj.correct_answer,

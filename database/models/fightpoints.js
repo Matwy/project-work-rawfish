@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID,
             allowNull: true,
         },
+        score: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
         posizione: {
             type: DataTypes.STRING,
             allowNull: false

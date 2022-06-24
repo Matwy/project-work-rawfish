@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllFightpoints, getFightpointsByUuid, createFightpoints, setFightpointOwner } = require('../controller/fightpoints_controller')
+const { getAllFightpoints, getFightpointsByUuid, createFightpoints, setFightpointOwner, getFightpointIcon } = require('../controller/fightpoints_controller')
 
 const router = Router()
 

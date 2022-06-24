@@ -12,11 +12,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         user_uuid: {
             type: DataTypes.UUID,
-            allowNull: false,
+            allowNull: false
+        },
+        score: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         },
         fightpoint_uuid: {
             type: DataTypes.UUID,
-            allowNull: false,
+            allowNull: false
         }
     }, {
         sequelize,

@@ -1,3 +1,4 @@
+const path = require('path')
 const models = require('../database/models')
 const tools = require('./tools')
 const validations = require('../validations/validate-cjs')
@@ -9,7 +10,7 @@ module.exports.getAllFightpoints = async (req, res, next) => {
     //  con gli user associati
     //  e con il numero di domande per fightpoint
     const allMonuments = await models.fightpoints.findAll({
-        attributes: ['uuid', 'state', 'city', 'posizione'],
+        attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
         include: [
             { model: models.users, as: 'user', attributes: ['username', 'firebase_id'] },
             { model: models.questions, as: 'questions' }
@@ -22,6 +23,7 @@ module.exports.getAllFightpoints = async (req, res, next) => {
     }
     res.status(200).json(fightpoints)
 }
+
 module.exports.getFightpointsByUuid = async (req, res, next) => {
     /*  restituisco i fight point di un utente specifico */
     const uuid_params = req.params.uuid
@@ -78,13 +80,18 @@ module.exports.createFightpoints = async (req, res, next) => {
     })
 }
 exports.setFightpointOwner = async (req, res, next) => {
-    const user_uuid = req.body.user_uuid
+    const firebase_id = res.locals.firebase_uid
     const fightpoint_uuid = req.body.fightpoint_uuid
+    const score = req.body.score
 
+    const current_user = await models.users.findOne({
+        where: { firebase_id: firebase_id }
+    })
+    user_uuid = current_user.uuid
     //bad requests
     //check user uuid
-    if (!await tools.isAUser(user_uuid)) {
-        res.status(400).json({ status: 400, message: user_uuid + " the user don't exist" })
+    if (!current_user) {
+        res.status(400).json({ status: 400, message: firebase_id + " the user don't exist" })
         return
     }
     //check fightpoint uuid
@@ -92,23 +99,45 @@ exports.setFightpointOwner = async (req, res, next) => {
         res.status(400).json({ status: 400, message: fightpoint_uuid + " the fightpoint don't exist" })
         return
     }
+    if (isNaN(score) || !score) {
+        return res.status(404).json({ status: 404, message: "Score must be a number" })
+    }
     // save last fightpoint owner for notification
     const fightpoint = await models.fightpoints.findOne({
         where: { uuid: fightpoint_uuid }
     })
     lastOwner = fightpoint.user_uuid
-    //updateOwner
-    await models.fightpoints.update(
-        { user_uuid: user_uuid },
-        { where: { uuid: fightpoint_uuid } }
-    )
+
     /* TODO: controlla se funziona */
     // save notification for the last Owner
-    if (lastOwner) {
-        await models.notifications.create({
-            user_uuid: lastOwner,
-            fightpoint_uuid: fightpoint_uuid
-        })
+    if (!lastOwner || !fightpoint.score) {
+        //updateOwner
+        await models.fightpoints.update(
+            {
+                user_uuid: user_uuid,
+                score: score
+            },
+            { where: { uuid: fightpoint_uuid } }
+        )
+        console.log("updated Owner", user_uuid, score)
+        return res.status(200).json({ message: 'fightpoint owner updated' })
     }
+    // se lo score del fightpoint è maggiore allora l'utente ha perso
+    if (fightpoint.score > score) return res.status(200).json({ message: 'Loosed' })
+
+    //updateOwner
+    await models.fightpoints.update(
+        {
+            user_uuid: user_uuid,
+            score: score
+        },
+        { where: { uuid: fightpoint_uuid } }
+    )
+    await models.notifications.create({
+        user_uuid: lastOwner,
+        score: score,
+        fightpoint_uuid: fightpoint_uuid
+    })
+    console.log("updated Owner", user_uuid, score)
     res.status(200).json({ message: 'fightpoint owner updated' })
 }
