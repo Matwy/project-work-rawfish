@@ -56,4 +56,4 @@ module.exports = (sequelize, DataTypes) => {
         })
     }
     return fightpoints;
-};
+}

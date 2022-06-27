@@ -3,24 +3,43 @@ const tools = require('./tools')
 
 module.exports.getUserInfo = async (firebaseIdObj) => {
     const userInfo = await models.users.findOne({
-        attributes: ['uuid', 'firebase_id', 'username', 'createdAt'],
+        attributes: ['uuid', 'firebase_id', 'username', 'score', 'createdAt'],
         where: {
             firebase_id: firebaseIdObj
         },
         raw: true
     })
-    userInfo.fightpointsOwned = await models.fightpoints.findAll({
-
+    let fightpointsOwned = await models.fightpoints.findAll({
+        attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
+        include: [
+            { model: models.users, as: 'user', attributes: ['username', 'firebase_id'] },
+            { model: models.questions, as: 'questions' }
+        ],
         where: {
             user_uuid: userInfo.uuid
         },
-        raw: true
     })
+    fightpointsOwned = JSON.parse(JSON.stringify(fightpointsOwned))
+    for (let i = 0; i < fightpointsOwned.length; i++) {
+        fightpointsOwned[i].n_questions = fightpointsOwned[i].questions.length
+        fightpointsOwned[i].questions = undefined
+    }
+    userInfo.fightpointsOwned = fightpointsOwned
     /*  TODO: controlla se funzionano le notifiche  */
     userInfo.notifications = await models.notifications.findAll({
+        attributes: [['createdAt', 'dateTime'], ['score', 'yourScore']],
+        include: [
+            {
+                model: models.fightpoints,
+                as: 'fightpoint',
+                attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
+                include: [{ model: models.users, as: 'user', attributes: ['username', 'firebase_id'] }]
+            }
+        ],
         where: {
             user_uuid: userInfo.uuid,
-        }
+        },
+        order: [['createdAt', 'DESC']]
     })
     userInfo.uuid = undefined
     return userInfo

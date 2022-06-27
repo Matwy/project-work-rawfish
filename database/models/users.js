@@ -1,5 +1,4 @@
 'use strict';
-const { user } = require('pg/lib/defaults');
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class users extends Model { }
@@ -16,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         username: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        score: {
+            type: DataTypes.INTEGER,
             allowNull: false
         }
     }, {

@@ -119,7 +119,6 @@ exports.setFightpointOwner = async (req, res, next) => {
             },
             { where: { uuid: fightpoint_uuid } }
         )
-        console.log("updated Owner", user_uuid, score)
         return res.status(200).json({ message: 'fightpoint owner updated' })
     }
     // se lo score del fightpoint è maggiore allora l'utente ha perso
@@ -138,6 +137,5 @@ exports.setFightpointOwner = async (req, res, next) => {
         score: score,
         fightpoint_uuid: fightpoint_uuid
     })
-    console.log("updated Owner", user_uuid, score)
     res.status(200).json({ message: 'fightpoint owner updated' })
 }

@@ -7,7 +7,6 @@ exports.getQAByFightpoints = async (req, res, next) => {
     let n_question = req.query.n_question
     /*BAD REQUESTS*/
     //  n_question validation
-    console.log(req.query);
     if (isNaN(n_question) || n_question.length < 0)
         return tools.badRequest(res, 'n_question ' + n_question + ' must be a number')
 
@@ -16,7 +15,6 @@ exports.getQAByFightpoints = async (req, res, next) => {
         //uuid non valido
         return tools.badRequest(res, fightpoint_uuid + ' is not a uuid')
 
-    console.log(fightpoint_uuid, 'fightpoint_uuid');
     let QA = await models.questions.findAll({
         where: { fightpoint_uuid: fightpoint_uuid },
         attributes: ['question', 'correct_answer'],

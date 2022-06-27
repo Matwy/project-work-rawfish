@@ -41,7 +41,6 @@ exports.isAFightpointsCopy = async (str) => {
     if (fightpoint == null) return false
 
     //fightpoints exist
-    console.log(fightpoint)
     return true
 }
 

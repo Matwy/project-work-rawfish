@@ -9,6 +9,7 @@ exports.getScoreBoard = async function (req, res, next) {
             { model: models.fightpoints, as: 'fightpoint', attributes: [] },
         ],
         group: ['users.uuid'],
+        order: [[Sequelize.literal('count(fightpoint.uuid)'), 'DESC']],
         raw: true
     })
     res.status(200).json(scoreBoard)
