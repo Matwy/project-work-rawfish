@@ -15,7 +15,7 @@ module.exports.getUserInfo = async (firebaseIdObj) => {
     let fightpointsOwned = await models.fightpoints.findAll({
         attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
         include: [
-            { model: models.users, as: 'user', attributes: ['username', 'firebase_id'] },
+            { model: models.users, as: 'user', attributes: ['username', 'firebase_id', 'avatar'] },
             { model: models.questions, as: 'questions' }
         ],
         where: {
@@ -36,7 +36,7 @@ module.exports.getUserInfo = async (firebaseIdObj) => {
                 model: models.fightpoints,
                 as: 'fightpoint',
                 attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
-                include: [{ model: models.users, as: 'user', attributes: ['username', 'firebase_id'] }]
+                include: [{ model: models.users, as: 'user', attributes: ['username', 'firebase_id', 'avatar'] }]
             }
         ],
         where: {

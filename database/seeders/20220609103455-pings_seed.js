@@ -27,7 +27,7 @@ module.exports = {
         },
         {
             user_uuid: null,
-            state: 'Spagna',
+            state: 'Spain',
             city: 'Madrid',
             posizione: '40.2459, -3.4209',
             createdAt: new Date(),

@@ -12,7 +12,7 @@ module.exports.getAllFightpoints = async (req, res, next) => {
     const allMonuments = await models.fightpoints.findAll({
         attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
         include: [
-            { model: models.users, as: 'user', attributes: ['username', 'firebase_id'] },
+            { model: models.users, as: 'user', attributes: ['username', 'firebase_id', 'avatar'] },
             { model: models.questions, as: 'questions' }
         ]
     })

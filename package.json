@@ -9,7 +9,8 @@
     "migrate": "npx sequelize-cli db:migrate",
     "migrate:reset": "npx sequelize-cli db:migrate:undo:all && npm run migrate",
     "populate": "npx sequelize-cli db:seed:all",
-    "populate:reset": "npx sequelize-cli db:seed:undo:all && npm run populate"
+    "populate:reset": "npx sequelize-cli db:seed:undo:all && npm run populate",
+    "generate-validator": "node ./validations/functionGenerator/ajv_validations.js"
   },
   "author": "",
   "license": "ISC",

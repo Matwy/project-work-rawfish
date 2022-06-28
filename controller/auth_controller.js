@@ -21,6 +21,7 @@ exports.getUserExists = async (req, res, next) => {
 exports.checkExistingUser = async (req, res, next) => {
     // check if user already exists in the database 404 if not 
     current_firebase_id = res.locals.firebase_uid
+    console.log("\n\nCheck existing user");
 
     const current_user = await models.users.findOne({
         where: { firebase_id: current_firebase_id }
@@ -47,11 +48,11 @@ module.exports.createUser = async (req, res, next) => {
     await models.users.create({
         username: userObj.username,
         firebase_id: res.locals.firebase_uid,
-        score: 0
+        avatar: userObj.avatar
     })
     console.log("User created successfully");
     res.status(201).json({
         message: 'users created',
-        user: { username: userObj.username },
+        user: { username: userObj.username, avatar: userObj.avatar },
     })
 }
