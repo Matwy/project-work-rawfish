@@ -1,4 +1,7 @@
+const validations = require('../validations/validate-cjs')
 const models = require('../database/models')
+const tools = require('./tools')
+
 exports.getUserExists = async (req, res, next) => {
     // Check if user exists in the database
     // • If not respond with 'user not found'
@@ -32,16 +35,19 @@ exports.checkExistingUser = async (req, res, next) => {
 module.exports.createUser = async (req, res, next) => {
     /*creo uno user data la posizione e l'utente che lo possiede*/
     const userObj = req.body
-
     //  bad Requests
     const validateUser = validations["user/create"]
     if (!validateUser(userObj)) {
         res.status(400).json({ status: 400, error: validateUser.errors })
         return
     }
+    if (await tools.isAUserFromFbid(res.locals.firebase_uid))
+        return res.status(400).json({ status: 400, error: "user already exists" })
+
     await models.users.create({
         username: userObj.username,
-        firebase_id: res.locals.firebase_uid
+        firebase_id: res.locals.firebase_uid,
+        score: 0
     })
     console.log("User created successfully");
     res.status(201).json({

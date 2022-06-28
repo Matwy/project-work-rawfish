@@ -12,7 +12,7 @@
             "type": "string"
         },
         "user_uuid": {
-            "type": "string"
+            "type": ["string", "null"]
         }
     },
     "required": ["state", "city", "posizione", "user_uuid"]

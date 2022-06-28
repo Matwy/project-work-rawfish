@@ -3,12 +3,15 @@ const tools = require('./tools')
 
 module.exports.getUserInfo = async (firebaseIdObj) => {
     const userInfo = await models.users.findOne({
-        attributes: ['uuid', 'firebase_id', 'username', 'score', 'createdAt'],
+        attributes: ['uuid', 'firebase_id', 'username', 'createdAt'],
         where: {
             firebase_id: firebaseIdObj
         },
         raw: true
     })
+    if (!userInfo)
+        return
+
     let fightpointsOwned = await models.fightpoints.findAll({
         attributes: ['uuid', 'state', 'city', 'posizione', 'score'],
         include: [

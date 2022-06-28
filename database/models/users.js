@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        score: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     }, {
         sequelize,

@@ -20,6 +20,7 @@ exports.isAUser = async (str) => {
 exports.isAUserFromFbid = async (str) => {
     //  user don't exist
     const user = await models.users.findOne({ where: { firebase_id: str } })
+    console.log("User " + user);
     if (!user) return false
 
     //user exist
