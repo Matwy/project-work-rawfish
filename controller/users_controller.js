@@ -1,9 +1,10 @@
 const models = require('../database/models')
 const tools = require('./tools')
+const validations = require('../validations/validate-cjs')
 
 module.exports.getUserInfo = async (firebaseIdObj) => {
     const userInfo = await models.users.findOne({
-        attributes: ['uuid', 'firebase_id', 'username', 'createdAt'],
+        attributes: ['uuid', 'firebase_id', 'username', 'avatar', 'createdAt'],
         where: {
             firebase_id: firebaseIdObj
         },
@@ -62,3 +63,29 @@ module.exports.getAllUsers = async (req, res, next) => {
 //
 //  POST
 //
+module.exports.updateUser = async (req, res, next) => {
+    /*creo uno user data la posizione e l'utente che lo possiede*/
+    const userObj = req.body
+    //  bad Requests
+    const validateUser = validations["user/create"]
+    if (!validateUser(userObj)) {
+        res.status(400).json({ status: 400, error: validateUser.errors })
+        return
+    }
+    if (!await tools.isAUserFromFbid(res.locals.firebase_uid))
+        return res.status(400).json({ status: 400, error: "user don't exists" })
+
+    await models.users.update(
+        {
+            username: userObj.username,
+            avatar: userObj.avatar
+        },
+        {
+            where: { firebase_id: res.locals.firebase_uid, }
+        })
+    console.log("User updated successfully", userObj.username, userObj.avatar);
+    res.status(201).json({
+        message: 'users updated successfully',
+        user: { username: userObj.username, avatar: userObj.avatar },
+    })
+}

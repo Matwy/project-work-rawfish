@@ -70,7 +70,7 @@ module.exports.createFightpoints = async (req, res, next) => {
         updatedAt: new Date()
     })
     res.status(201).json({
-        message: 'fightpoints created',
+        message: 'fightpoints created successfully',
         fightpoint: {
             posizione: fightpointObj.posizione,
             state: fightpointObj.state,
@@ -122,7 +122,7 @@ exports.setFightpointOwner = async (req, res, next) => {
         return res.status(200).json({ message: 'fightpoint owner updated' })
     }
     // se lo score del fightpoint è maggiore allora l'utente ha perso
-    if (fightpoint.score > score) return res.status(200).json({ message: 'Loosed' })
+    if (fightpoint.score >= score) return res.status(200).json({ message: 'Loosed' })
 
     //updateOwner
     await models.fightpoints.update(
@@ -137,5 +137,5 @@ exports.setFightpointOwner = async (req, res, next) => {
         score: score,
         fightpoint_uuid: fightpoint_uuid
     })
-    res.status(200).json({ message: 'fightpoint owner updated' })
+    res.status(200).json({ message: 'fightpoint owner updated successfully' })
 }

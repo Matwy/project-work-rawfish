@@ -16,7 +16,7 @@ exports.getUserExists = async (req, res, next) => {
         return res.status(200).json({ message: 'user not found' })
     }
 
-    res.status(200).json('user already exists')
+    res.status(200).json({ message: 'user already exist' })
 }
 exports.checkExistingUser = async (req, res, next) => {
     // check if user already exists in the database 404 if not 
@@ -50,9 +50,9 @@ module.exports.createUser = async (req, res, next) => {
         firebase_id: res.locals.firebase_uid,
         avatar: userObj.avatar
     })
-    console.log("User created successfully");
+    console.log("User created successfully", userObj.username, userObj.avatar);
     res.status(201).json({
-        message: 'users created',
+        message: 'users created successfully',
         user: { username: userObj.username, avatar: userObj.avatar },
     })
 }
