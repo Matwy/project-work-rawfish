@@ -14,7 +14,8 @@ module.exports.getAllFightpoints = async (req, res, next) => {
         include: [
             { model: models.users, as: 'user', attributes: ['username', 'firebase_id', 'avatar'] },
             { model: models.questions, as: 'questions' }
-        ]
+        ],
+        order: [['user_uuid', 'ASC NULLS FIRST']]
     })
     const fightpoints = JSON.parse(JSON.stringify(allMonuments))
     for (let i = 0; i < fightpoints.length; i++) {
