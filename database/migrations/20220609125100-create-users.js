@@ -21,6 +21,11 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
+            score: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                defaultValue: 0
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

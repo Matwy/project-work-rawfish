@@ -121,8 +121,15 @@ exports.setFightpointOwner = async (req, res, next) => {
     })
 
     // save notification for the last Owner
-    if (!lastOwner || !fightpoint.score || lastOwner == user_uuid) {
+    if (!lastOwner || !fightpoint.score) {
         //updateOwner
+        //  aggiunge 100 punti all'utmente
+        await models.users.update(
+            {
+                score: current_user.score + 100
+            },
+            { where: { uuid: user_uuid } }
+        )
         await models.fightpoints.update(
             {
                 user_uuid: user_uuid,
@@ -135,7 +142,21 @@ exports.setFightpointOwner = async (req, res, next) => {
     // se lo score del fightpoint è maggiore allora l'utente ha perso
     if (fightpoint.score >= score) return res.status(200).json({ message: 'Loosed' })
 
-    //updateOwner
+    if (lastOwner == user_uuid) {
+        await models.users.update(
+            { score: current_user.score + 50 },
+            { where: { uuid: user_uuid } }
+        )
+        return res.status(200).json({ message: 'fightpoint score updated' })
+    }
+    //  updateOwner
+    //  aggiunge 100 punti all'utmente
+    await models.users.update(
+        {
+            score: current_user.score + 100
+        },
+        { where: { uuid: user_uuid } }
+    )
     await models.fightpoints.update(
         {
             user_uuid: user_uuid,
