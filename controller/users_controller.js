@@ -31,7 +31,7 @@ module.exports.getUserInfo = async (firebaseIdObj) => {
     userInfo.fightpointsOwned = fightpointsOwned
     /*  TODO: controlla se funzionano le notifiche  */
     userInfo.notifications = await models.notifications.findAll({
-        attributes: [['createdAt', 'dateTime'], ['score', 'yourScore']],
+        attributes: ['uuid', ['createdAt', 'dateTime'], ['score', 'yourScore']],
         include: [
             {
                 model: models.fightpoints,

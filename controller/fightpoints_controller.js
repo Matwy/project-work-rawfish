@@ -89,7 +89,9 @@ exports.setFightpointOwner = async (req, res, next) => {
         where: { firebase_id: firebase_id }
     })
     user_uuid = current_user.uuid
+    //
     //bad requests
+    //
     //check user uuid
     if (!current_user) {
         res.status(400).json({ status: 400, message: firebase_id + " the user don't exist" })
@@ -103,15 +105,23 @@ exports.setFightpointOwner = async (req, res, next) => {
     if (isNaN(score) || !score) {
         return res.status(404).json({ status: 404, message: "Score must be a number" })
     }
+
     // save last fightpoint owner for notification
     const fightpoint = await models.fightpoints.findOne({
         where: { uuid: fightpoint_uuid }
     })
     lastOwner = fightpoint.user_uuid
 
-    /* TODO: controlla se funziona */
+    //if the user have a notification about this fightpoint delete it
+    await models.notifications.destroy({
+        where: {
+            fightpoint_uuid: fightpoint.uuid,
+            user_uuid: user_uuid
+        }
+    })
+
     // save notification for the last Owner
-    if (!lastOwner || !fightpoint.score) {
+    if (!lastOwner || !fightpoint.score || lastOwner == user_uuid) {
         //updateOwner
         await models.fightpoints.update(
             {
